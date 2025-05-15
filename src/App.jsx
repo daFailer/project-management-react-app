@@ -2,7 +2,7 @@ import { useState } from "react";
 import ProjectsSidebar from './components/ProjectsSidebar';
 import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
-import ProjectDetails from "./components/ProjectDetails";
+import SelectedProject from "./components/SelectedProject";
 
 function App() {
   const [projectIdCounter, setProjectIdCounter] = useState(0);
@@ -25,8 +25,6 @@ function App() {
     setProjectIdCounter((prevCount) => {
       return +prevCount + 1;
     })
-
-    console.log('generateId', projectIdCounter);
 
     return projectIdCounter;
   }
@@ -69,17 +67,24 @@ function App() {
 
   let content;
 
+  const selectedProject = projectState.projects.find((p) => p.id === projectState.selectedProjectId);
+
   if (projectState.selectedProjectId === null) {
     content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />;
   } else if (typeof projectState.selectedProjectId === 'undefined') {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />
   } else {
-    content = <ProjectDetails project={projectState.projects.find((p) => p.id === projectState.selectedProjectId)}/>;
+    content = <SelectedProject project={selectedProject}/>;
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar projects={projectState.projects} onSelectProject={handleSelectProject} onStartAddProject={handleStartAddProject} />
+      <ProjectsSidebar
+        projects={projectState.projects}
+        onSelectProject={handleSelectProject}
+        onStartAddProject={handleStartAddProject}
+        selectedProjectId={projectState.selectedProjectId}
+      />
       {content}
     </main>
   );
