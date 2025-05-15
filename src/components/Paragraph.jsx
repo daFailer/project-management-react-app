@@ -1,6 +1,6 @@
 const Paragraph = ({children}) => {
   return (
-    <p className="text-stone-400 mb-4">{children}</p>
+    <p className="text-stone-600 mb-4">{children}</p>
   )
 }
 
